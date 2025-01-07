@@ -14,5 +14,6 @@ createApp({
 
 function addTrackByURL() {
     const url = document.getElementById('urlTrack')
-    trackList.value.push(url.innerText)
+    trackList.value.push(url.value)
+    url.value = ""
 }
