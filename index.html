@@ -29,6 +29,8 @@
                 <ul>
                     <li v-for="track in trackList" :key="track">
                         <span>{{ track }}</span>
+                        <a href="" role="button">Play</a>
+                        <a href="" role="button">Delete</a>
                     </li>
                 </ul>
             </section>
@@ -40,8 +42,8 @@
                         <option value="url">By URL</option>
                         <option value="upload">Via file upload</option>
                     </select>
-                    <input placeholder="Provide URL" type="text">
-                    <button disabled>Add by URL</button>
+                    <input placeholder="Provide URL" type="text" id="urlTrack">
+                    <button onclick="{{addTrackByURL()}}">Add by URL</button>
                 </div>
             </section>
         </main>
