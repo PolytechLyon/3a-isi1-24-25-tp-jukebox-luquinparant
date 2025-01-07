@@ -13,10 +13,10 @@
             <h1>Jukebox</h1>
             <section>
                 <h2>Player</h2>
-                <div>Choose a track to play.</div>
+                <div>{{playingTrack}}</div>
                 <fieldset>
                     <legend>Playback Mode</legend>
-                    <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST">
+                    <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST" checked>
                     <label for="repeatList">Repeat List</label>
                     <input name="Playback" id="repeatTrack" type="radio" value="REPEAT_TRACK">
                     <label for="repeatTrack">Repeat Track</label>
@@ -26,7 +26,11 @@
             </section>
             <section>
                 <h2>Playlist</h2>
-                <div>Add a new track to the playlist.</div>
+                <ul>
+                    <li v-for="track in trackList" :key="track">
+                        <span>{{ track }}</span>
+                    </li>
+                </ul>
             </section>
             <section>
                 <h2>New Track</h2>
