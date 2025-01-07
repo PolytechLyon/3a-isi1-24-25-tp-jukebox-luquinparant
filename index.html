@@ -16,9 +16,9 @@
                 <div>Choose a track to play.</div>
                 <fieldset>
                     <legend>Playback Mode</legend>
-                    <input name="Playback" id="repeatList" type="radio" value="REAPEAT_LIST">
+                    <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST">
                     <label for="repeatList">Repeat List</label>
-                    <input name="Playback" id="repeatTrack" type="radio" value="REAPEAT_TRACK">
+                    <input name="Playback" id="repeatTrack" type="radio" value="REPEAT_TRACK">
                     <label for="repeatTrack">Repeat Track</label>
                     <input name="Playback" id="doNotRepeat" type="radio" value="DO_NOT_REPEAT">
                     <label for="doNotRepeat">Don&apos;t Repeat</label>
@@ -31,10 +31,10 @@
             <section>
                 <h2>New Track</h2>
                 <div>
-                    <label for="methodSelector">Add Track</label>
-                    <select id="methodSelector">
+                    <label for="addTrackSelector">Add Track</label>
+                    <select id="addTrackSelector">
                         <option value="url">By URL</option>
-                        <option value="local">Via file upload</option>
+                        <option value="upload">Via file upload</option>
                     </select>
                     <input placeholder="Provide URL" type="text">
                     <button disabled>Add by URL</button>
