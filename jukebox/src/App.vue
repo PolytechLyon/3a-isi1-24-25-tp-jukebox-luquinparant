@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
+<script setup>
+import HelloWorld from './components/HelloWorld.vue'
+import TheWelcome from './components/TheWelcome.vue'
+</script>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jukebox</title>
-</head>
-
-<body>
-    <div id="app">
-        <main>
+<template>
+  <main>
             <h1>Jukebox</h1>
             <section>
                 <h2>Player</h2>
@@ -47,13 +42,33 @@
                 </div>
             </section>
         </main>
-    </div>
-</html>
+</template>
 
+<style scoped>
+header {
+  line-height: 1.5;
+}
 
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
 
-<script src="https://unpkg.com/vue@3"></script>
-<script src="script.js"></script>
-</body>
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
 
-</html>
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
+</style>
