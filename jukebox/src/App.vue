@@ -1,47 +1,64 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import { createApp, ref } from 'vue'
+export default {
+  setup() {
+    const playingTrack = ref('Choose a track to play.')
+    const trackList = ref([])
+
+    function addTrackByURL() {
+      const url = document.getElementById('urlTrack')
+      trackList.value.push(url.value);
+      url.value = ""
+    }
+
+    return {
+      playingTrack,
+      trackList,
+      addTrackByURL
+    };
+  }
+}
 </script>
 
 <template>
   <main>
-            <h1>Jukebox</h1>
-            <section>
-                <h2>Player</h2>
-                <div>{{playingTrack}}</div>
-                <fieldset>
-                    <legend>Playback Mode</legend>
-                    <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST" checked>
-                    <label for="repeatList">Repeat List</label>
-                    <input name="Playback" id="repeatTrack" type="radio" value="REPEAT_TRACK">
-                    <label for="repeatTrack">Repeat Track</label>
-                    <input name="Playback" id="doNotRepeat" type="radio" value="DO_NOT_REPEAT">
-                    <label for="doNotRepeat">Don&apos;t Repeat</label>
-                </fieldset>
-            </section>
-            <section>
-                <h2>Playlist</h2>
-                <ul>
-                    <li v-for="track in trackList" :key="track">
-                        <span>{{ track }}</span>
-                        <a href="" role="button">Play</a>
-                        <a href="" role="button">Delete</a>
-                    </li>
-                </ul>
-            </section>
-            <section>
-                <h2>New Track</h2>
-                <div>
-                    <label for="addTrackSelector">Add Track</label>
-                    <select id="addTrackSelector">
-                        <option value="url">By URL</option>
-                        <option value="upload">Via file upload</option>
-                    </select>
-                    <input placeholder="Provide URL" type="text" id="urlTrack">
-                    <button @click="addTrackByURL()">Add by URL</button>
-                </div>
-            </section>
-        </main>
+    <h1>Jukebox</h1>
+    <section>
+      <h2>Player</h2>
+      <div>{{ playingTrack }}</div>
+      <fieldset>
+        <legend>Playback Mode</legend>
+        <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST" checked>
+        <label for="repeatList">Repeat List</label>
+        <input name="Playback" id="repeatTrack" type="radio" value="REPEAT_TRACK">
+        <label for="repeatTrack">Repeat Track</label>
+        <input name="Playback" id="doNotRepeat" type="radio" value="DO_NOT_REPEAT">
+        <label for="doNotRepeat">Don&apos;t Repeat</label>
+      </fieldset>
+    </section>
+    <section>
+      <h2>Playlist</h2>
+      <ul>
+        <li v-for="track in trackList" :key="track">
+          <span>{{ track }}</span>
+          <a href="" role="button">Play</a>
+          <a href="" role="button">Delete</a>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h2>New Track</h2>
+      <div>
+        <label for="addTrackSelector">Add Track</label>
+        <select id="addTrackSelector">
+          <option value="url">By URL</option>
+          <option value="upload">Via file upload</option>
+        </select>
+        <input placeholder="Provide URL" type="text" id="urlTrack">
+        <button @click="addTrackByURL()">Add by URL</button>
+      </div>
+    </section>
+  </main>
 </template>
 
 <style scoped>
