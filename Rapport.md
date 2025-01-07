@@ -1,8 +1,8 @@
 # Compte Rendu TP Jukebox
 
 ## Binôme
-- Nom Prénom
-- Nom Prénom
+- Parant Louison
+- Luquin Emmanuel
 
 ## Choix de conception et de réalisation
 
