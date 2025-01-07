@@ -8,6 +8,42 @@
 </head>
 
 <body>
+    <div id="app">
+        <main>
+            <h1>Jukebox</h1>
+            <section>
+                <h2>Player</h2>
+                <div>Choose a track to play.</div>
+                <fieldset>
+                    <legend>Playback Mode</legend>
+                    <input name="Playback" id="repeatList" type="radio" value="REAPEAT_LIST">
+                    <label for="repeatList">Repeat List</label>
+                    <input name="Playback" id="repeatTrack" type="radio" value="REAPEAT_TRACK">
+                    <label for="repeatTrack">Repeat Track</label>
+                    <input name="Playback" id="doNotRepeat" type="radio" value="DO_NOT_REPEAT">
+                    <label for="doNotRepeat">Don&apos;t Repeat</label>
+                </fieldset>
+            </section>
+            <section>
+                <h2>Playlist</h2>
+                <div>Add a new track to the playlist.</div>
+            </section>
+            <section>
+                <h2>New Track</h2>
+                <div>
+                    <label for="methodSelector">Add Track</label>
+                    <select id="methodSelector">
+                        <option value="url">By URL</option>
+                        <option value="local">Via file upload</option>
+                    </select>
+                    <input placeholder="Provide URL" type="text">
+                    <button disabled>Add by URL</button>
+                </div>
+            </section>
+        </main>
+    </div>
+</html>
+
 
 
 <script src="https://unpkg.com/vue@3"></script>
