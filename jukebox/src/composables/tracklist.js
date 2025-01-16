@@ -2,18 +2,24 @@ import { ref } from 'vue'
 
 export function useTracklist() {
 
-    const tracklist = ref([])
+    const trackList = ref([])
+    const isPlayingTrack = ref(false)
+    const trackPlayed = ref("")
 
     const addTrackByURL = () => {
         const url = document.getElementById('urlTrack')
-        tracklist.value.push(url.value);
+        trackList.value.push(url.value);
         url.value = ""
     }
 
-    const deleteTrack = (index) => {
-        console.log(index)
-        tracklist.value.splice(index, 1)
+    const playTrack = (index) => {
+        isPlayingTrack.value = true
+        trackPlayed.value = trackList.value[index]
     }
 
-    return { tracklist, addTrackByURL, deleteTrack }
+    const deleteTrack = (index) => {
+        trackList.value.splice(index, 1)
+    }
+
+    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack }
 }

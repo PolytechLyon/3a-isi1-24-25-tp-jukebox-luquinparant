@@ -1,16 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-    const playingTrack = ref('Choose a track to play.')
-    const isPlayingTrack = ref(false)
-    const trackPlayed = ref("")
+    
     import {useTracklist} from "@/composables/tracklist.js";
 
-    const { tracklist, addTrackByUrl, deleteTrack} = useTracklist()
-
-    const playTrack = (index) => {
-      console.log(index)
-      playingTrack.value = trackList.value[index]
-    }
+    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed } = useTracklist()
 
 </script>
 
