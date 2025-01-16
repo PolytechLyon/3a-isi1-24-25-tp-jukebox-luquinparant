@@ -3,7 +3,7 @@ import { ref } from 'vue'
     
     import {useTracklist} from "@/composables/tracklist.js";
 
-    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, progress, textPlayable, playPause, audioRef } = useTracklist()
+    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef} = useTracklist()
 
 </script>
 
@@ -18,7 +18,7 @@ import { ref } from 'vue'
             <p>Playing: {{ trackList[trackPlayed] }}</p>
             <button @click="playPause">{{ textPlayable }}</button>
             <div>
-                <progress :value="progress"></progress>
+                <progress max="100" value="0" ref="progressRef"></progress>
             </div>
         </div>
         <audio id="audio" :src="trackList[trackPlayed]" ref="audioRef">

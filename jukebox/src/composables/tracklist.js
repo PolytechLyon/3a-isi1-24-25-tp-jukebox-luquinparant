@@ -5,9 +5,9 @@ export function useTracklist() {
     const trackList = ref([])
     const isPlayingTrack = ref(false)
     const trackPlayed = ref(0)
-    const progress = ref(0)
     const textPlayable = ref("Play")
     const audioRef = ref(null)
+    const progressRef = ref(null)
 
     const addTrackByURL = () => {
         const url = document.getElementById('urlTrack')
@@ -27,11 +27,11 @@ export function useTracklist() {
     }
 
     const updateProgress = () => {
-        progress.value = (audioRef.value.currentTime / audioRef.value.duration) * 100
+        progressRef.value.value = (100 * audioRef.value.currentTime) / audioRef.value.duration
     }
 
     const playPause = () => {
-        if (textPlayable.value == "Pause") {
+        if (textPlayable.value === "Pause") {
             textPlayable.value = "Play"
             audioRef.value.pause()
         }
@@ -41,8 +41,8 @@ export function useTracklist() {
         }
     }
 
-    onMounted(() => document.addEventListener('timeupdate', updateProgress));
-    onUnmounted(() => document.removeEventListener('timeupdate', updateProgress));
+    onMounted(() => audioRef.value.addEventListener('timeupdate', updateProgress));
+    onUnmounted(() => audioRef.value.removeEventListener('timeupdate', updateProgress));
 
-    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack, progress, playPause, textPlayable, audioRef }
+    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack, playPause, textPlayable, audioRef, progressRef }
 }
