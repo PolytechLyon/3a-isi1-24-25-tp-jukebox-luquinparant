@@ -1,23 +1,15 @@
 <script setup>
-import { createApp, ref } from 'vue'
+import { ref } from 'vue'
     const playingTrack = ref('Choose a track to play.')
-    const trackList = ref([])
+    import {useTracklist} from "@/composables/tracklist.js";
 
-    function addTrackByURL() {
-      const url = document.getElementById('urlTrack')
-      trackList.value.push(url.value);
-      url.value = ""
-    }
+    const { tracklist, addTrackByUrl, deleteTrack} = useTracklist()
 
     const playTrack = (index) => {
       console.log(index)
       playingTrack.value = trackList.value[index]
     }
 
-    const deleteTrack = (index) => {
-      console.log(index)
-      trackList.value.splice(index, 1)
-    }
 </script>
 
 <template>
