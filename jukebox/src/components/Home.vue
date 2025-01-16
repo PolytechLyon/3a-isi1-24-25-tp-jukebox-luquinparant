@@ -3,7 +3,7 @@ import { ref } from 'vue'
     
     import {useTracklist} from "@/composables/tracklist.js";
 
-    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed } = useTracklist()
+    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, progress, textPlayable, playPause, audioRef } = useTracklist()
 
 </script>
 
@@ -15,12 +15,14 @@ import { ref } from 'vue'
             <p>Choose a track to play.</p>
         </div>
         <div v-else>
-            <p>Playing: {{ trackPlayed }}</p>
-            <audio>
-                <source src="" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+            <p>Playing: {{ trackList[trackPlayed] }}</p>
+            <button @click="playPause">{{ textPlayable }}</button>
+            <div>
+                <progress :value="progress"></progress>
+            </div>
         </div>
+        <audio id="audio" :src="trackList[trackPlayed]" ref="audioRef">
+        </audio>
         <fieldset>
             <legend>Playback Mode</legend>
             <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST" checked>
