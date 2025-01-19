@@ -32,16 +32,19 @@ export function useTracklist() {
     }
 
     const deleteTrack = (index) => {
+        const delCurrent = index === trackPlayed.value
         trackList.value.splice(index, 1)
         if (trackList.value.length === 0) {
             isPlayingTrack.value = false;
+        } else if (delCurrent) {
+            changeTrack()
         }
     }
 
     const changeTrack = () => {
         const repeatMode = document.querySelector('input[name="Playback"]:checked').value;
         if (repeatMode === "REPEAT_LIST") {
-            if (trackPlayed.value === trackList.value.length - 1) {
+            if (trackPlayed.value >= trackList.value.length - 1) {
                 trackPlayed.value = 0
             } else {
                 trackPlayed.value = (trackPlayed.value + 1)
@@ -51,7 +54,7 @@ export function useTracklist() {
                 // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
                 const liDoc = document.getElementById(trackList.value[trackPlayed.value])
                 liDoc.innerHTML = trackList.value[trackPlayed.value].strike()
-                if (trackPlayed.value === trackList.value.length - 1) {
+                if (trackPlayed.value >= trackList.value.length - 1) {
                     trackPlayed.value = 0
                 } else {
                     trackPlayed.value = (trackPlayed.value + 1)
@@ -63,7 +66,26 @@ export function useTracklist() {
             progress.value = 0
             nextTick(() => audioRef.value.play())
         } else {
-            textPlayable.value = "Play"
+            if (trackPlayed.value >= trackList.value.length - 1) {
+                textPlayable.value = "Play"
+            } else {
+                trackPlayed.value = (trackPlayed.value + 1)
+                progress.value = 0
+                nextTick(() => audioRef.value.play())
+            }
+            const regex = new RegExp('.*mp3');
+            while (!regex.test(trackList.value[trackPlayed.value])) {
+                // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
+                const liDoc = document.getElementById(trackList.value[trackPlayed.value])
+                liDoc.innerHTML = trackList.value[trackPlayed.value].strike()
+                if (trackPlayed.value >= trackList.value.length - 1) {
+                    textPlayable.value = "Play"
+                } else {
+                    trackPlayed.value = (trackPlayed.value + 1)
+                    progress.value = 0
+                    nextTick(() => audioRef.value.play())
+                }
+            }
         }
     }
 
@@ -93,19 +115,17 @@ export function useTracklist() {
             const { left, width } = progressDoc.getBoundingClientRect()
             const clickX = event.clientX - left
             const percentage = clickX / width
-            progress.value = audio.duration * percentage
+            audio.currentTime = audio.duration * percentage
         }
     };
 
     onMounted(() => {
         audioRef.value.addEventListener("timeupdate", updateProgress)
-        // progressRef.value.addEventListener('click', putAudioAtCursorPosition);
     })
 
     onBeforeUnmount(() => {
         audioRef.value.removeEventListener("timeupdate", updateProgress)
-        // progressRef.value.removeEventListener('click', putAudioAtCursorPosition);
     })
 
-    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack, progress, playPause, textPlayable, audioRef, progressRef, putAudioAtCursorPosition }
+    return { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition }
 }

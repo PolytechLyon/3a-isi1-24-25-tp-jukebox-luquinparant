@@ -15,16 +15,19 @@
             <button @click="playPause">{{ textPlayable }}</button>
             <div>
                 <progress :value="progress" max="100" @click="putAudioAtCursorPosition" ref="progressRef"></progress>
+
             </div>
         </div>
-        <audio id="audio" :src="trackList[trackPlayed]" ref="audioRef">
+        <audio :src="trackList[trackPlayed]" ref="audioRef">
         </audio>
         <fieldset>
             <legend>Playback Mode</legend>
             <input name="Playback" id="repeatList" type="radio" value="REPEAT_LIST" checked>
             <label for="repeatList">Repeat List</label>
+            &thinsp;
             <input name="Playback" id="repeatTrack" type="radio" value="REPEAT_TRACK">
             <label for="repeatTrack">Repeat Track</label>
+            &thinsp;
             <input name="Playback" id="doNotRepeat" type="radio" value="DO_NOT_REPEAT">
             <label for="doNotRepeat">Don&apos;t Repeat</label>
         </fieldset>
