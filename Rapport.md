@@ -10,6 +10,7 @@ Cependant, si nous avions eu un projet plus conséquent à produire, nous aurion
 
 ## Difficultés rencontrées (optionnel)
 Nous n'avons pas commencé avec la bonne architecture. Ainsi, nous avons dû reprendre l'intégralité du début du projet (Ajout à la playlist + Visuels).
+Ajouter par fichier local nous a demandé d'utiliser blob ce qui nous a empeché de checker si les fichiers étaient des mp3 valides en utilisant une regex, ainsi on ne peut pas les striker, si on n'utilise pas l'ajout par local et que l'on décommente les parties liées a la regex, le strike de mauvais fichier fonctionne.
 À part cela, nous n'avons pas rencontré de difficulté particulière.
 
 ## Extensions réalisées (optionnel)
