@@ -1,6 +1,6 @@
 import {ref, onMounted, nextTick, onBeforeUnmount} from 'vue'
 
-export function useTracklist() {
+export function useJukebox() {
 
     const trackList = ref([])
     const isPlayingTrack = ref(false)
@@ -9,6 +9,7 @@ export function useTracklist() {
     const textPlayable = ref("Play")
     const audioRef = ref(null)
     const progressRef = ref(null)
+    const selected = ref("url")
 
     const addTrackByURL = () => {
         const url = document.getElementById('urlTrack')
@@ -16,19 +17,26 @@ export function useTracklist() {
         url.value = ""
     }
 
+    const addTrackByFile = () => {
+        const file = document.getElementById('fileTrack')
+        const url = URL.createObjectURL(file.files[0])
+        trackList.value.push(url);
+    }
+
     const playTrack = (index) => {
         trackPlayed.value = index
-        const regex = new RegExp('.*mp3');
+        //Regex works if not considering adding mp3 by files via blob
+        /*const regex = new RegExp('.*mp3');
         if (!regex.test(trackList.value[trackPlayed.value])) {
             // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
             const liDoc = document.getElementById(trackList.value[trackPlayed.value])
             liDoc.innerHTML = trackList.value[trackPlayed.value].strike()
-        } else {
+        } else {*/
             isPlayingTrack.value = true
             textPlayable.value = "Pause"
             audioRef.value.currentTime = 0
             nextTick(() => (audioRef.value.play()))
-        }
+        //}
     }
 
     const deleteTrack = (index) => {
@@ -49,7 +57,8 @@ export function useTracklist() {
             } else {
                 trackPlayed.value = (trackPlayed.value + 1)
             }
-            const regex = new RegExp('.*mp3');
+            //Regex works if not considering adding mp3 by files via blob
+            /* const regex = new RegExp('.*mp3');
             while (!regex.test(trackList.value[trackPlayed.value])) {
                 // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
                 const liDoc = document.getElementById(trackList.value[trackPlayed.value])
@@ -59,7 +68,7 @@ export function useTracklist() {
                 } else {
                     trackPlayed.value = (trackPlayed.value + 1)
                 }
-            }
+            }*/
             progress.value = 0
             nextTick(() => audioRef.value.play())
         } else if (repeatMode === "REPEAT_TRACK") {
@@ -73,7 +82,8 @@ export function useTracklist() {
                 progress.value = 0
                 nextTick(() => audioRef.value.play())
             }
-            const regex = new RegExp('.*mp3');
+            //Regex works if not considering adding mp3 by files via blob
+            /*const regex = new RegExp('.*mp3');
             while (!regex.test(trackList.value[trackPlayed.value])) {
                 // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
                 const liDoc = document.getElementById(trackList.value[trackPlayed.value])
@@ -85,7 +95,7 @@ export function useTracklist() {
                     progress.value = 0
                     nextTick(() => audioRef.value.play())
                 }
-            }
+            }*/
         }
     }
 
@@ -127,5 +137,5 @@ export function useTracklist() {
         audioRef.value.removeEventListener("timeupdate", updateProgress)
     })
 
-    return { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition }
+    return { trackList, addTrackByURL, addTrackByFile, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition, selected}
 }

@@ -1,6 +1,6 @@
 <script setup>
-    import {useTracklist} from "@/composables/tracklist.js";
-    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition} = useTracklist()
+    import {useJukebox} from "@/composables/jukebox.js";
+    const { trackList, addTrackByURL, addTrackByFile, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition, selected} = useJukebox()
 </script>
 
 <template>
@@ -46,12 +46,18 @@
         <h2>New Track</h2>
         <div>
             <label for="addTrackSelector">Add Track</label>
-            <select id="addTrackSelector">
-                <option value="url">By URL</option>
-                <option value="upload">Via file upload</option>
+            <select v-model="selected" id="addTrackSelector">
+              <option value="url">By URL</option>
+              <option value="upload">Via file upload</option>
             </select>
-            <input placeholder="Provide URL" type="text" id="urlTrack">
-            <button @click="addTrackByURL()">Add by URL</button>
+            <template v-if="selected === 'url'">
+              <input placeholder="Provide URL" type="text" id="urlTrack">
+              <button @click="addTrackByURL()">Add by URL</button>
+            </template>
+            <template v-else>
+              <input type="file" id="fileTrack">
+              <button @click="addTrackByFile()">Add by file</button>
+            </template>
         </div>
     </section>
 </template>
