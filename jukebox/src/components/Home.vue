@@ -1,10 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-    
     import {useTracklist} from "@/composables/tracklist.js";
-
-    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef} = useTracklist()
-
+    const { trackList, addTrackByURL, playTrack, deleteTrack, isPlayingTrack, trackPlayed, textPlayable, playPause, audioRef, progressRef, progress, putAudioAtCursorPosition} = useTracklist()
 </script>
 
 <template>
@@ -18,7 +14,7 @@ import { ref } from 'vue'
             <p>Playing: {{ trackList[trackPlayed] }}</p>
             <button @click="playPause">{{ textPlayable }}</button>
             <div>
-                <progress max="100" value="0" ref="progressRef"></progress>
+                <progress :value="progress" max="100" @click="putAudioAtCursorPosition" ref="progressRef"></progress>
             </div>
         </div>
         <audio id="audio" :src="trackList[trackPlayed]" ref="audioRef">
@@ -36,7 +32,7 @@ import { ref } from 'vue'
     <section>
         <h2>Playlist</h2>
         <ul>
-            <li v-for="track in trackList" :key="track">
+            <li v-for="track in trackList" :key="track" :id="track">
                 <span>{{ track }}</span>
                 <button role="button" @click="playTrack(trackList.indexOf(track))">Play</button>
                 <button role="button" @click="deleteTrack(trackList.indexOf(track))">Delete</button>

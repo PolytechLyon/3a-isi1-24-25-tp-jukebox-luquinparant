@@ -1,10 +1,11 @@
-import {ref, onMounted, onUnmounted, nextTick} from 'vue'
+import {ref, onMounted, nextTick, onBeforeUnmount} from 'vue'
 
 export function useTracklist() {
 
     const trackList = ref([])
     const isPlayingTrack = ref(false)
     const trackPlayed = ref(0)
+    const progress = ref(0)
     const textPlayable = ref("Play")
     const audioRef = ref(null)
     const progressRef = ref(null)
@@ -16,11 +17,18 @@ export function useTracklist() {
     }
 
     const playTrack = (index) => {
-        isPlayingTrack.value = true
         trackPlayed.value = index
-        textPlayable.value = "Pause"
-        audioRef.value.currentTime = 0
-        nextTick(() => (audioRef.value.play()))
+        const regex = new RegExp('.*mp3');
+        if (!regex.test(trackList.value[trackPlayed.value])) {
+            // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
+            const liDoc = document.getElementById(trackList.value[trackPlayed.value])
+            liDoc.innerHTML = trackList.value[trackPlayed.value].strike()
+        } else {
+            isPlayingTrack.value = true
+            textPlayable.value = "Pause"
+            audioRef.value.currentTime = 0
+            nextTick(() => (audioRef.value.play()))
+        }
     }
 
     const deleteTrack = (index) => {
@@ -30,16 +38,40 @@ export function useTracklist() {
         }
     }
 
-    const updateProgress = () => {
-        progressRef.value.value = (100 * audioRef.value.currentTime) / audioRef.value.duration
+    const changeTrack = () => {
+        const repeatMode = document.querySelector('input[name="Playback"]:checked').value;
+        if (repeatMode === "REPEAT_LIST") {
+            if (trackPlayed.value === trackList.value.length - 1) {
+                trackPlayed.value = 0
+            } else {
+                trackPlayed.value = (trackPlayed.value + 1)
+            }
+            const regex = new RegExp('.*mp3');
+            while (!regex.test(trackList.value[trackPlayed.value])) {
+                // trackList.value[trackPlayed.value] = trackList.value[trackPlayed.value].strike()
+                const liDoc = document.getElementById(trackList.value[trackPlayed.value])
+                liDoc.innerHTML = trackList.value[trackPlayed.value].strike()
+                if (trackPlayed.value === trackList.value.length - 1) {
+                    trackPlayed.value = 0
+                } else {
+                    trackPlayed.value = (trackPlayed.value + 1)
+                }
+            }
+            progress.value = 0
+            nextTick(() => audioRef.value.play())
+        } else if (repeatMode === "REPEAT_TRACK") {
+            progress.value = 0
+            nextTick(() => audioRef.value.play())
+        } else {
+            textPlayable.value = "Play"
+        }
     }
 
-    //marche pas
-    const progressClick = (event) => {
-        progressRef.value.value = Math.min(Math.max((event.offsetX / progressRef.value.width) * 100, 0), 100)
-        audioRef.value.pause()
-        audioRef.value.currentTime = audioRef.value.currentTime * (progressRef.value.value / 100)
-        audioRef.value.play()
+    const updateProgress = () => {
+        progress.value = audioRef.value.currentTime / audioRef.value.duration * 100
+        if (progress.value === 100) {
+            changeTrack()
+        }
     }
 
     const playPause = () => {
@@ -53,10 +85,27 @@ export function useTracklist() {
         }
     }
 
-    onMounted(() => audioRef.value.addEventListener('timeupdate', updateProgress));
-    //onMounted(() => progressRef.value.addEventListener('click', progressClick));
-    onUnmounted(() => audioRef.value.removeEventListener('timeupdate', updateProgress));
-    //onUnmounted(() => progressRef.value.removeEventListener('click', progressClick));
+    // Function from Clément RENIERS and Simon PRIBYLSKI
+    const putAudioAtCursorPosition = (event) => {
+        const audio = audioRef.value
+        const progressDoc = progressRef.value
+        if (audio && progressDoc) {
+            const { left, width } = progressDoc.getBoundingClientRect()
+            const clickX = event.clientX - left
+            const percentage = clickX / width
+            progress.value = audio.duration * percentage
+        }
+    };
 
-    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack, playPause, textPlayable, audioRef, progressRef }
+    onMounted(() => {
+        audioRef.value.addEventListener("timeupdate", updateProgress)
+        // progressRef.value.addEventListener('click', putAudioAtCursorPosition);
+    })
+
+    onBeforeUnmount(() => {
+        audioRef.value.removeEventListener("timeupdate", updateProgress)
+        // progressRef.value.removeEventListener('click', putAudioAtCursorPosition);
+    })
+
+    return { trackList, addTrackByURL, deleteTrack, isPlayingTrack, trackPlayed, playTrack, progress, playPause, textPlayable, audioRef, progressRef, putAudioAtCursorPosition }
 }
